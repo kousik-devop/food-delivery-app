@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { MapPin, Calendar, ShoppingBag } from "lucide-react";
-import axios from "../../axiosConfig";
+// import axios from "../../axiosConfig";
+import axios from "axios";
 import Cookie from "js-cookie";
 
 const OrderHistoryPage = () => {
@@ -12,7 +13,7 @@ const OrderHistoryPage = () => {
     const fetchOrders = async () => {
       try {
         const res = await axios.get(
-          "/api/orders/my-orders",
+          "https://food-delivery-app-sfgf.onrender.com/api/orders/my-orders",
           {
             headers: { Authorization: `Bearer ${Cookie.get("token")}` },
             withCredentials: true,
