@@ -10,7 +10,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors({
-    origin: "https://food-delivery-app-wine-ten.vercel.app/",
+    origin: "https://food-delivery-app-wine-ten.vercel.app",
     credentials: true
 }));
 app.use(cookieParser());
