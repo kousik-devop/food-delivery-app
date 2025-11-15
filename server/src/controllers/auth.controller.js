@@ -33,14 +33,14 @@ async function registerUser(req, res) {
 
     // Cookie settings: httpOnly, secure=false for localhost, sameSite=Lax, path='/', maxAge=1 day
         // Use SameSite=None so the cookie can be sent from the dev client (different port).
-        // Keep secure=true only in production.
-        res.cookie("user_token", token, {
-    httpOnly: true,
-    secure: false,        // because localhost is NOT https
-    sameSite: "Lax",      // Lax works with localhost
-    path: "/",
-    maxAge: 24 * 60 * 60 * 1000
-});
+    // Keep secure=true only in production.
+    res.cookie("user_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: "None",
+      path: "/",
+      maxAge: 24 * 60 * 60 * 1000
+    });
 
     res.status(201).json({
         message: "User registered successfully",
@@ -105,15 +105,15 @@ async function loginUser(req, res) {
 
         // 5️⃣ Set cookie securely
             // For cross-origin requests from the dev client (different port), set SameSite=None
-            // and make secure true in production. Browsers require SameSite=None for cookies to
-            // be sent on XHR/fetch from another origin.
-            res.cookie("user_token", token, {
-    httpOnly: true,
-    secure: false,        // because localhost is NOT https
-    sameSite: "Lax",      // Lax works with localhost
-    path: "/",
-    maxAge: 24 * 60 * 60 * 1000
-});
+        // and make secure true in production. Browsers require SameSite=None for cookies to
+        // be sent on XHR/fetch from another origin.
+        res.cookie("user_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: "None",
+          path: "/",
+          maxAge: 24 * 60 * 60 * 1000
+        });
 
 
         // 6️⃣ Send response
@@ -172,13 +172,13 @@ async function registerFoodPartner(req, res) {
     const token = jwt.sign({ id: foodPartner._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
     // Set auth cookie for partner
-        res.cookie("partner_token", token, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "Lax",
-    path: "/",
-    maxAge: 24 * 60 * 60 * 1000
-});
+    res.cookie("partner_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: "None",
+      path: "/",
+      maxAge: 24 * 60 * 60 * 1000
+    });
 
     res.status(201).json({
         message: "Food partner registered successfully",
@@ -221,12 +221,12 @@ async function loginFoodPartner(req, res) {
     }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
     res.cookie("partner_token", token, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "Lax",
-    path: "/",
-    maxAge: 24 * 60 * 60 * 1000
-});
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: "None",
+      path: "/",
+      maxAge: 24 * 60 * 60 * 1000
+    });
 
     res.status(200).json({
         message: "Food partner logged in successfully",
