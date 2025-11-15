@@ -1,6 +1,6 @@
 // src/contexts/UserContext.jsx
 import React, { createContext, useState, useEffect, useContext } from "react";
-import axios from "axios";
+import axios from ".././axiosConfig";
 
 const UserContext = createContext();
 
@@ -29,7 +29,7 @@ export const UserProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post("https://food-delivery-app-sfgf.onrender.com/api/auth/user/logout");
+      await axios.post("/api/auth/user/logout");
       setUser(null);
     } catch (err) {
       console.error("Logout failed", err);
