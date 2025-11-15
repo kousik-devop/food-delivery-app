@@ -1,6 +1,6 @@
 // src/contexts/UserContext.jsx
 import React, { createContext, useState, useEffect, useContext } from "react";
-import axios from "../../axiosConfig";
+import axios from ".././axiosConfig";
 
 const UserContext = createContext();
 

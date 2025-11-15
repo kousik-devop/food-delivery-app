@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from "../../axiosConfig";
+import axios from ".././axiosConfig";
 import Cookies from 'js-cookie';
 
 const PartnerContext = createContext(null);

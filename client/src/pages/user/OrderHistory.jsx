@@ -20,7 +20,12 @@ const OrderHistoryPage = () => {
         );
         setOrders(res.data.orders);
       } catch (err) {
-        setError(err.response?.data?.message || "Failed to fetch orders.");
+        setError(
+  err.response?.data?.message ||
+  err.message ||
+  "Failed to fetch orders."
+);
+
       } finally {
         setLoading(false);
       }
