@@ -15,7 +15,7 @@ const OrderHistoryPage = () => {
         const res = await axios.get(
           "https://food-delivery-app-sfgf.onrender.com/api/orders/my-orders",
           {
-            headers: { Authorization: `Bearer ${Cookie.get("token")}` },
+            // headers: { Authorization: `Bearer ${Cookie.get("token")}` },
             withCredentials: true,
           }
         );
