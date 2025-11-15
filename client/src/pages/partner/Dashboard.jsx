@@ -16,12 +16,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(
-          "/api/orders/partner-orders",
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axios.get("/api/orders/partner-orders");
         setOrders(res.data.orders);
       } catch (err) {
         setError(
@@ -30,18 +25,15 @@ const Dashboard = () => {
       } finally {
         setLoading(false);
       }
-    };
+    }
     if (partner) fetchOrders();
   }, [partner]);
 
   const handleUpdateStatus = async (orderId, newStatus) => {
     try {
       await axios.patch(
-        `http://localhost:3000/api/orders/${orderId}/status`,
-        { status: newStatus },
-        {
-          withCredentials: true,
-        }
+        `/api/orders/${orderId}/status`,
+        { status: newStatus }
       );
       // Update the local state to reflect the change immediately
       setOrders((prevOrders) =>

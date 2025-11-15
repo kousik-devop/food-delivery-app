@@ -1,13 +1,11 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from ".././axiosConfig";
-import Cookies from 'js-cookie';
+import axios from "../axiosConfig";
 
 const PartnerContext = createContext(null);
 
 export const PartnerProvider = ({ children }) => {
   const [partner, setPartner] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
-  const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPartner = async () => {
@@ -29,8 +27,6 @@ export const PartnerProvider = ({ children }) => {
 
   const login = (partnerData) => {
     setPartner(partnerData);
-    setToken(Cookies.get('partner_token'));
-    // No need to handle token here, state update will trigger re-renders
   };
 
   const logout = () => {
@@ -42,7 +38,7 @@ export const PartnerProvider = ({ children }) => {
   };
 
   return (
-    <PartnerContext.Provider value={{ partner, loading, login, logout, token }}>
+    <PartnerContext.Provider value={{ partner, loading, login, logout }}>
       {children}
     </PartnerContext.Provider>
   );
