@@ -10,7 +10,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors({
-    origin: "https://food-delivery-8frw9asxk-kousik-devops-projects.vercel.app",
+    origin: true,
     credentials: true
 }));
 app.use(cookieParser());
