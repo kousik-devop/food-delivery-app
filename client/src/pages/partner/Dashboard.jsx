@@ -3,7 +3,7 @@ import SearchBar from "../../components/partner-components/dashboard/SearchBar";
 import OrderTabs from "../../components/partner-components/dashboard/OrderTabs";
 import OrderCard from "../../components/partner-components/dashboard/OrderCard";
 import BottomNav from "../../components/partner-components/dashboard/BottomNav";
-import axios from "axios";
+import axios from "../../axiosConfig";
 import { usePartner } from "../../contexts/PartnerContext";
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("Pending");
@@ -17,7 +17,7 @@ const Dashboard = () => {
     const fetchOrders = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3000/api/orders/partner-orders",
+          "/api/orders/partner-orders",
           {
             withCredentials: true,
           }

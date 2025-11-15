@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../../axiosConfig";
 import BottomNav from "../../components/partner-components/dashboard/BottomNav";
 import { usePartner } from "../../contexts/PartnerContext";
 import { useFood } from "../../contexts/FoodContext";
@@ -79,7 +79,7 @@ const CreateFoodPage = () => {
         return;
       }
 
-      const res = await axios.post("http://localhost:3000/api/food/", data, {
+      const res = await axios.post("/api/food/", data, {
         headers: {
           // Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

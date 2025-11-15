@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MapPin, Calendar, ShoppingBag } from "lucide-react";
-import axios from "axios";
+import axios from "../../axiosConfig";
 import Cookie from "js-cookie";
 
 const OrderHistoryPage = () => {

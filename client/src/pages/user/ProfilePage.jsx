@@ -1,6 +1,6 @@
 import React from 'react'
 import { useUser } from '../../contexts/UserContext';
-import axios from 'axios';
+import axios from "../../axiosConfig";
 
 const ProfilePage = () => {
 

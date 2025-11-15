@@ -2,7 +2,7 @@ import axios from "axios";
 
 const GetFood = async () => {
   try {
-    const response = await axios.get("http://localhost:3000/api/food/", {
+    const response = await axios.get("/api/food/", {
       withCredentials: true, // Keep this to handle any CORS or cookie-based logic if needed later
     });
 

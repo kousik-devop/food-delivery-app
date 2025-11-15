@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../../axiosConfig";
 import Cookie from "js-cookie";
 import { Link } from "react-router-dom";
 import { Heart, Utensils } from "lucide-react";
