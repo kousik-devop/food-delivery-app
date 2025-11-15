@@ -12,7 +12,7 @@ const OrderHistoryPage = () => {
     const fetchOrders = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3000/api/orders/my-orders",
+          "/api/orders/my-orders",
           {
             headers: { Authorization: `Bearer ${Cookie.get("token")}` },
             withCredentials: true,
