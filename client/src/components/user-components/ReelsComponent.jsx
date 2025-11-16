@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Heart, Bookmark, Share2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useFood } from "../../contexts/FoodContext";
-import axios from "axios";
+import axios from "../../axiosConfig";
 import Cookie from "js-cookie";
 import { useUser } from "../../contexts/UserContext";
 
@@ -21,7 +21,7 @@ const ReelsComponent = () => {
     setLiked((prev) => ({ ...prev, [id]: !prev[id] }));
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/food/like",
+        "/api/food/like",
         { foodId: id },
         {
           headers: { Authorization: `Bearer ${Cookie.get("token")}` },
@@ -43,7 +43,7 @@ const ReelsComponent = () => {
     setSaved((prev) => ({ ...prev, [id]: !prev[id] }));
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/food/save",
+        "/api/food/save",
         { foodId: id },
         {
           headers: { Authorization: `Bearer ${Cookie.get("token")}` },

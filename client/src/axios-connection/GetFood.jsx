@@ -1,6 +1,7 @@
 import axios from "../axiosConfig";
 
 const GetFood = async () => {
+  console.debug("baseURL:", axios.defaults.baseURL);
   try {
     const response = await axios.get("/api/food/", {
       withCredentials: true, // Keep this to handle any CORS or cookie-based logic if needed later

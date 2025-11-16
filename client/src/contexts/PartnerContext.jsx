@@ -11,7 +11,7 @@ export const PartnerProvider = ({ children }) => {
     const fetchPartner = async () => {
       try {
         // The browser will automatically send the httpOnly cookie
-        const res = await axios.get('/api/auth/food-partner/me');
+        const res = await axios.get('/api/auth/food-partner/me', { withCredentials: true });
         setPartner(res.data.partner);
       } catch (err) {
         console.debug('Silent partner auth failed:', err);

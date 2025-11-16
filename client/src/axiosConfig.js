@@ -6,7 +6,7 @@ import axios from "axios";
 const getBaseURL = () => {
   if (import.meta.env.MODE === 'development') {
     // Dev mode: use relative path so Vite proxy handles routing
-    return '';
+    return 'http://localhost:3000';
   }
   // Production: use backend URL from environment or default to Render
   return import.meta.env.VITE_API_URL || 'https://food-delivery-app-sfgf.onrender.com';

@@ -8,12 +8,14 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
 
+  console.log("AXIOS BASE URL:", axios.defaults.baseURL);
+
   // Silent login on app load
   useEffect(() => {
     const fetchUser = async () => {
       try {
         // server exposes the authenticated user at /api/auth/user/me
-        const res = await axios.get("/api/auth/user/me");
+        const res = await axios.get("/api/auth/user/me", { withCredentials: true });
         setUser(res.data.user);
       } catch (err) {
         console.debug("Silent auth failed:", err);
