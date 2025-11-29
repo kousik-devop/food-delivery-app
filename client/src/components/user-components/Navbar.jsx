@@ -10,7 +10,6 @@ function Navbar() {
 
   async function logoutHandler() {
     try {
-      const response = await axios.post('/api/auth/user/logout');
       logout();
       // navigate to home
       window.location.href = "/";

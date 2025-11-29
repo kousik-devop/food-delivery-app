@@ -8,8 +8,6 @@ const ProfilePage = () => {
 
   async function logoutHandler() {
     try {
-      const response = await axios.post('/api/auth/user/logout');
-      alert(response.data.message);
       logout();
       // navigate to home
       window.location.href = "/";
