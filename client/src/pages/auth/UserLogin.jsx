@@ -44,6 +44,7 @@ const Login = () => {
         "/api/auth/user/login",
         JSON.stringify(formData),
         {
+          withCredentials: true,
           headers: {
             'Content-Type': 'application/json'
           }

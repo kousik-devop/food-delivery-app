@@ -42,7 +42,10 @@ const FoodPartnerRegisterPage = () => {
     try {
       const response = await axios.post(
         "/api/auth/food-partner/register",
-        formData
+        formData,
+        {
+          withCredentials: true,
+        }
       );
       setMessage("✅ Partner registered successfully!");
       console.log("Response:", response.data);

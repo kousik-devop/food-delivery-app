@@ -35,7 +35,9 @@ const RegisterPage = () => {
     console.log("Register Form Data:", inputData);
 
     try {
-      const response = await axios.post("/api/auth/user/register", inputData);
+      const response = await axios.post("/api/auth/user/register", inputData, {
+        withCredentials: true,
+      });
       setMessage("✅ User registered successfully!");
       console.log("Response:", response.data);
 

@@ -31,7 +31,7 @@ export const UserProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post("/api/auth/user/logout");
+      await axios.post("/api/auth/user/logout", {}, { withCredentials: true });
       setUser(null);
     } catch (err) {
       console.error("Logout failed", err);

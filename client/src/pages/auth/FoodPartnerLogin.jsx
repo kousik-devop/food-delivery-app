@@ -37,7 +37,10 @@ const FoodPartnerLogin = () => {
     try {
       const response = await axios.post(
         "/api/auth/food-partner/login",
-        formData
+        formData,
+        {
+          withCredentials: true,
+        }
       );
 
       console.log("Partner Login Response:", response.data);

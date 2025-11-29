@@ -1,19 +1,28 @@
 import axios from "axios";
 
 // Determine API base URL based on environment
-// In development: use relative path so Vite proxy forwards to localhost:3000
-// In production: use backend URL from env var or fallback to Render instance
 const getBaseURL = () => {
-  if (import.meta.env.MODE === 'development') {
-    // Dev mode: use relative path so Vite proxy handles routing
-    return 'http://localhost:3000';
+  const isDev = import.meta.env.MODE === "development";
+
+  if (isDev) {
+    // Local backend
+    return "http://localhost:3000";
   }
-  // Production: use backend URL from environment or default to Render
-  return import.meta.env.VITE_API_URL || 'https://food-delivery-app-sfgf.onrender.com';
+
+  // Production backend (MUST set in Vercel!)
+  return import.meta.env.VITE_API_URL;
 };
 
-export default axios.create({
+// Create axios instance
+const instance = axios.create({
   baseURL: getBaseURL(),
   withCredentials: true,
 });
 
+// CRITICAL: Also sync defaults so React never uses wrong axios
+axios.defaults.baseURL = instance.defaults.baseURL;
+axios.defaults.withCredentials = true;
+
+console.log("🔗 FINAL AXIOS BASE URL:", instance.defaults.baseURL);
+
+export default instance;
