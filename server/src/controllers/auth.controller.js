@@ -62,17 +62,11 @@ async function loginUser(req, res) {
         // DEBUG: log incoming body for troubleshooting
         console.log("[DEBUG] loginUser - headers:", req.headers);
         console.log("[DEBUG] loginUser - body:", req.body);
-
-        if (!req.body) {
-            return res.status(400).json({ message: "Missing request body" });
+        if(!req.body) {
+            console.warn("[DEBUG] loginUser - empty body");
+            return res.status(400).json({ message: "Invalid email or password." });
         }
         const { email, password } = req.body;
-
-        // 1️⃣ Input validation
-        if (!email || !password) {
-            console.warn("[DEBUG] loginUser - missing fields", { email, password });
-            return res.status(400).json({ message: "Email and password are required" });
-        }
 
         // 2️⃣ Check user existence
         const user = await userModel.findOne({ email });
