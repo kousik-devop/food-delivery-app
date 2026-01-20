@@ -1,70 +1,66 @@
-const foodPartnerModel = require("../models/foodpartner.model")
-const userModel = require("../models/user.model")
 const jwt = require("jsonwebtoken");
+const foodPartnerModel = require("../models/foodpartner.model");
+const userModel = require("../models/user.model");
 
-
+/**
+ * FOOD PARTNER AUTH
+ */
 async function authFoodPartnerMiddleware(req, res, next) {
-
-    // look for partner token stored as 'partner_token'
-    const token = req.cookies.partner_token;
-
-    if (!token) {
-        return res.status(401).json({
-            message: "Please login first"
-        })
-    }
-
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const token = req.cookies.partner_token;
 
-        const foodPartner = await foodPartnerModel.findById(decoded.id);
+        if (!token) {
+            return res.status(401).json({ message: "Please login first" });
+        }
 
-        req.foodPartner = foodPartner
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        next()
+        const foodPartner = await foodPartnerModel
+            .findById(decoded.id)
+            .select("-password");
 
-    } catch (err) {
+        if (!foodPartner) {
+            return res.status(401).json({ message: "Food partner not found" });
+        }
 
-        return res.status(401).json({
-            message: "Invalid token"
-        })
+        req.foodPartner = foodPartner;
+        next();
 
+    } catch (error) {
+        return res.status(401).json({ message: "Invalid or expired token" });
     }
-
 }
 
+/**
+ * USER AUTH
+ */
 async function authUserMiddleware(req, res, next) {
-
-    // look for user token stored as 'user_token'
-    const token = req.cookies.user_token;
-    console.log("Auth middleware - user token:", token);
-
-    if (!token) {
-        return res.status(401).json({
-            message: "Please login first"
-        })
-    }
-
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const token = req.cookies.user_token;
 
-        const user = await userModel.findById(decoded.id);
+        if (!token) {
+            return res.status(401).json({ message: "Please login first" });
+        }
 
-        req.user = user
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        next()
+        const user = await userModel
+            .findById(decoded.id)
+            .select("-password");
 
-    } catch (err) {
+        if (!user) {
+            return res.status(401).json({ message: "User not found" });
+        }
 
-        return res.status(401).json({
-            message: "Invalid token"
-        })
+        req.user = user;
+        next();
 
+    } catch (error) {
+        return res.status(401).json({ message: "Invalid or expired token" });
     }
-
 }
 
 module.exports = {
     authFoodPartnerMiddleware,
     authUserMiddleware
-}
+};

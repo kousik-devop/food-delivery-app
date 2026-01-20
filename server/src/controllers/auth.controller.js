@@ -31,15 +31,14 @@ async function registerUser(req, res) {
         id: user._id,
     }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-    const isProd = process.env.NODE_ENV === 'production';
 
-res.cookie("user_token", token, {
-  httpOnly: true,
-  secure: isProd,
-  sameSite: isProd ? "None" : "Lax",
-  path: "/",
-  maxAge: 24 * 60 * 60 * 1000
-});
+    res.cookie("user_token", token, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "Lax",
+    path: "/",
+    maxAge: 24 * 60 * 60 * 1000
+    });
 
 
 
@@ -106,13 +105,13 @@ async function loginUser(req, res) {
 
         const isProd = process.env.NODE_ENV === 'production';
 
-res.cookie("user_token", token, {
-  httpOnly: true,
-  secure: isProd,
-  sameSite: isProd ? "None" : "Lax",
-  path: "/",
-  maxAge: 24 * 60 * 60 * 1000
-});
+        res.cookie("user_token", token, {
+          httpOnly: true,
+          secure: isProd,
+          sameSite: isProd ? "None" : "Lax",
+          path: "/",
+        maxAge: 24 * 60 * 60 * 1000
+        });
 
 
 
@@ -135,10 +134,17 @@ res.cookie("user_token", token, {
 
 
 function logoutUser(req, res) {
-    res.clearCookie("user_token");
-    res.status(200).json({
-        message: "User logged out successfully"
+    res.clearCookie("user_token", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "Lax",
+    path: "/",   // 🔥 REQUIRED
     });
+
+  return res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
 }
 
 
@@ -172,15 +178,13 @@ async function registerFoodPartner(req, res) {
     // Create JWT token for partner
     const token = jwt.sign({ id: foodPartner._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-    const isProd = process.env.NODE_ENV === "production";
-
-res.cookie("partner_token", token, {
-  httpOnly: true,
-  secure: isProd,
-  sameSite: isProd ? "None" : "Lax",
-  path: "/",
-  maxAge: 24 * 60 * 60 * 1000
-});
+    res.cookie("partner_token", token, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "Lax",
+    path: "/",
+    maxAge: 24 * 60 * 60 * 1000
+    });
 
     res.status(201).json({
         message: "Food partner registered successfully",
@@ -224,13 +228,13 @@ async function loginFoodPartner(req, res) {
 
     const isProd = process.env.NODE_ENV === "production";
 
-res.cookie("partner_token", token, {
-  httpOnly: true,
-  secure: isProd,
-  sameSite: isProd ? "None" : "Lax",
-  path: "/",
-  maxAge: 24 * 60 * 60 * 1000
-});
+    res.cookie("partner_token", token, {
+    httpOnly: true,
+    secure: false,
+    sameSite:"Lax",
+    path: "/",
+    maxAge: 24 * 60 * 60 * 1000
+    });
 
     res.status(200).json({
         message: "Food partner logged in successfully",
@@ -246,7 +250,12 @@ res.cookie("partner_token", token, {
 }
 
 function logoutFoodPartner(req, res) {
-    res.clearCookie("partner_token");
+    res.clearCookie("partner_token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict"
+    });
+
     res.status(200).json({
         message: "Food partner logged out successfully"
     });
@@ -254,35 +263,35 @@ function logoutFoodPartner(req, res) {
 
 async function getFoodPartnerProfile(req, res) {
     try {
-        // The authFoodPartnerMiddleware should have attached the partner to the request
         if (!req.foodPartner) {
             return res.status(401).json({ message: "Not authenticated" });
         }
-        // Create a copy and remove password before sending
-        const partner = { ...req.foodPartner.toObject() };
-        delete partner.password;
-        res.status(200).json({ partner });
+
+        res.status(200).json({
+            partner: req.foodPartner   // password already removed in middleware
+        });
     } catch (error) {
         console.error("Error fetching food partner profile:", error);
         res.status(500).json({ message: "Server error" });
     }
 }
 
+
 async function getUserProfile(req, res) {
     try {
-        const token = req.cookies.user_token;
-        console.log("Token:", token);
-        if (!token) return res.status(401).json({ message: "Not authenticated" });
+        if (!req.user) {
+            return res.status(401).json({ message: "Not authenticated" });
+        }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await userModel.findById(decoded.id).select("-password");
-        if (!user) return res.status(404).json({ message: "User not found" });
-
-        res.status(200).json({ user });
-    } catch (err) {
-        res.status(401).json({ message: "Invalid token" });
+        res.status(200).json({
+            user: req.user
+        });
+    } catch (error) {
+        console.error("Error fetching user profile:", error);
+        res.status(500).json({ message: "Server error" });
     }
 }
+
 
 module.exports = {
     registerUser,

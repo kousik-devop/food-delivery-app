@@ -2,13 +2,6 @@ import axios from "axios";
 
 // Determine API base URL based on environment
 const getBaseURL = () => {
-  const isDev = import.meta.env.MODE === "development";
-
-  if (isDev) {
-    // Local backend
-    return "http://localhost:3000";
-  }
-
   // Production backend (MUST set in Vercel!)
   return import.meta.env.VITE_API_URL;
 };

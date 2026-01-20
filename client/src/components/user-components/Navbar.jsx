@@ -1,24 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Heart, ShoppingCart, MapPin, Search, User, LogOut, Settings } from "lucide-react";
 
 function Navbar() {
 
   const { user, logout } = useUser();
+  const navigate = useNavigate();
 
   async function logoutHandler() {
     try {
-      logout();
-      // navigate to home
-      window.location.href = "/";
+      await logout();   // 🔥 critical
+      navigate("/");
     } catch (err) {
-      console.error('Logout failed', err);
-      alert(err.response?.data?.message || 'Logout failed');
+      console.error("Logout failed", err);
+      alert(err.response?.data?.message || "Logout failed");
     }
-  }
-
+  };
 
   const [showProfile, setShowProfile] = useState(false);
   const profileRef = useRef(null);
