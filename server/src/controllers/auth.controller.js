@@ -103,12 +103,11 @@ async function loginUser(req, res) {
         // 4️⃣ Create JWT
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
-        const isProd = process.env.NODE_ENV === 'production';
 
         res.cookie("user_token", token, {
           httpOnly: true,
-          secure: isProd,
-          sameSite: isProd ? "None" : "Lax",
+          secure: false,
+          sameSite:"Lax",
           path: "/",
         maxAge: 24 * 60 * 60 * 1000
         });
@@ -125,6 +124,7 @@ async function loginUser(req, res) {
                 fullName: user.fullName,
             },
         });
+        
     } catch (error) {
         console.error("Login Error:", error);
         res.status(500).json({ message: "Internal server error" });
