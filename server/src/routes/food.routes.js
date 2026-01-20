@@ -1,8 +1,10 @@
 const express = require('express');
 const foodController = require("../controllers/food.controller")
-const authMiddleware = require("../middlewares/auth.middlewares")
+const userAuth = require("../middlewares/userAuth");
 const router = express.Router();
 const multer = require('multer');
+const foodPartnerAuth = require("../middlewares/foodPartnerAuth");
+
 
 
 const upload = multer({
@@ -13,7 +15,7 @@ const upload = multer({
 /* POST /api/food/ [protected]*/
 // Accept both 'video' and 'image' files (image optional)
 router.post('/',
-    authMiddleware.authFoodPartnerMiddleware,
+    foodPartnerAuth,
     upload.fields([
         { name: 'video', maxCount: 1 },
         { name: 'image', maxCount: 1 }
@@ -26,29 +28,29 @@ router.get("/", foodController.getFoodItems)
 
 
 router.post('/like',
-    authMiddleware.authUserMiddleware,
+    userAuth,
     foodController.likeFood)
 
 
 router.post('/save',
-    authMiddleware.authUserMiddleware,
+    userAuth,
     foodController.saveFood
 )
 
 
 router.get('/save',
-    authMiddleware.authUserMiddleware,
+    userAuth,
     foodController.getSaveFood
 )
 
 // Update and delete food items (partner protected)
 router.put('/:id',
-    authMiddleware.authFoodPartnerMiddleware,
+    foodPartnerAuth,
     foodController.updateFood
 )
 
 router.delete('/:id',
-    authMiddleware.authFoodPartnerMiddleware,
+    foodPartnerAuth,
     foodController.deleteFood
 )
 
