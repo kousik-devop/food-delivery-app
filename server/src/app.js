@@ -7,8 +7,8 @@ const foodRoutes = require('./routes/food.routes');
 const foodPartnerRoutes = require('./routes/food-partner.routes');
 const orderRoutes = require('./routes/order.route');
 const cors = require('cors');
-
 const app = express();
+
 app.use(cors({
     origin: true,
     credentials: true

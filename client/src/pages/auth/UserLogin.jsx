@@ -45,9 +45,6 @@ const Login = () => {
         JSON.stringify(formData),
         {
           withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json'
-          }
         }
       );
       console.log(response.data);
