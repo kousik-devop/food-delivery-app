@@ -9,10 +9,18 @@ const orderRoutes = require('./routes/order.route');
 const cors = require('cors');
 const app = express();
 
+const cors = require("cors");
+
 app.use(cors({
-    origin: "https://reeleat.vercel.app/",
-    credentials: true
+  origin: "https://reeleat.vercel.app",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+app.options("*", cors());
+
+
 
 app.use(cookieParser());
 app.use(express.json());
